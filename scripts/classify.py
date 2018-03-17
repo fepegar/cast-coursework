@@ -39,11 +39,11 @@ start = time()
 print('\nTesting...')
 scores = []
 for sample in test_set.samples:
-    y_sample_predicted = clf.predict(sample.X)
-    scores.append(clf.score(sample.X, sample.y))
-    sample.save_prediction(y_sample_predicted)
+    y_sample_predicted = clf.predict_proba(sample.X)
+    # scores.append(clf.score(sample.X, sample.y))
+    sample.save_prediction(y_sample_predicted[:, 1])
 print('Testing time:', time() - start, 'seconds')
-print('Score:', np.array(scores).mean())
+# print('Score:', np.array(scores).mean())
 
 print('\nSaving segmentations...')
 # test_set.save_predictions(y_training_predicted)
