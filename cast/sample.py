@@ -37,9 +37,17 @@ class Sample:
         self.prediction_mask_path = self.predicted_dir \
                                     / f'{self.id}_predicted_mask.png'
         self.frangi_path = self.filtered_dir / f'{self.id}_frangi.tiff'
+        self.sobel_path = self.filtered_dir / f'{self.id}_sobel.tiff'
+        self.laplacian_path = self.filtered_dir / f'{self.id}_laplacian.tiff'
+        self.lab_path = self.filtered_dir / f'{self.id}_lab.tiff'
+        self.hsv_path = self.filtered_dir / f'{self.id}_hsv.tiff'
 
         self._rgb_data = None
+        self._hsv_data = None
+        self._lab_data = None
+        self._laplacian_data = None
         self._frangi_data = None
+        self._sobel_data = None
         self._mask = None
         self._labels = None
         self.prediction = None
@@ -50,6 +58,26 @@ class Sample:
         if self._rgb_data is None:
             self._rgb_data = im.read(self.rgb_path)
         return self._rgb_data
+
+
+    @property
+    def lab_data(self):
+        if not self.lab_path.is_file():
+            self._lab_data = im.lab_filter(self.rgb_data)
+            im.write(self._lab_data, self.lab_path)
+        if self._lab_data is None:
+            self._lab_data = im.read(self.lab_path)
+        return self._lab_data
+
+
+    @property
+    def hsv_data(self):
+        if not self.hsv_path.is_file():
+            self._hsv_data = im.hsv_filter(self.rgb_data)
+            im.write(self._hsv_data, self.hsv_path)
+        if self._hsv_data is None:
+            self._hsv_data = im.read(self.hsv_path)
+        return self._hsv_data
 
 
     @property
@@ -98,7 +126,6 @@ class Sample:
 
     @property
     def frangi_data(self):
-
         if not self.frangi_path.is_file():
             self._frangi_data = im.frangi_filter(self.rgb_data)
             im.write(self._frangi_data, self.frangi_path)
@@ -107,10 +134,45 @@ class Sample:
         return self._frangi_data
 
 
+    @property
+    def sobel_data(self):
+        if not self.sobel_path.is_file():
+            self._sobel_data = im.sobel_filter(self.rgb_data)
+            im.write(self._sobel_data, self.sobel_path)
+        if self._sobel_data is None:
+            self._sobel_data = im.read(self.sobel_path)
+        return self._sobel_data
+
+
+    @property
+    def laplacian_data(self):
+        if not self.laplacian_path.is_file():
+            self._laplacian_data = im.laplacian_filter(self.rgb_data)
+            im.write(self._laplacian_data, self.laplacian_path)
+        if self._laplacian_data is None:
+            self._laplacian_data = im.read(self.laplacian_path)
+        return self._laplacian_data
+
+
     def get_features(self):
+        # Color
         rgb_features = self.rgb_data.reshape(self.N, 3)
+        lab_features = self.lab_data.reshape(self.N, 3)
+        hsv_features = self.hsv_data.reshape(self.N, 3)
+
+        # Edges and vesselness
+        sobel_features = self.sobel_data.reshape(self.N, 1)
         frangi_features = self.frangi_data.reshape(self.N, 1)
-        features = np.hstack([rgb_features, frangi_features])
+        laplacian_features = self.laplacian_data.reshape(self.N, 1)
+        features = [
+            rgb_features,
+            lab_features,
+            hsv_features,
+            sobel_features,
+            frangi_features,
+            laplacian_features,
+        ]
+        features = np.hstack(features)
         return features
 
 
