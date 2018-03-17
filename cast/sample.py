@@ -24,6 +24,7 @@ class Sample:
 
         self.dataset_dir = image_path.parents[1]
         self.filtered_dir = self.dataset_dir / 'filtered'
+        self.predicted_dir = self.dataset_dir / 'predicted'
         self.rgb_path = image_path
         self.manual_1_path = self.dataset_dir / '1st_manual' \
                                               / f'{self.id}_manual1.gif'
@@ -31,8 +32,10 @@ class Sample:
                                               / f'{self.id}_manual2.gif'
         self.mask_path = self.dataset_dir / 'mask' \
                                           / f'{self.id}_{self.type}_mask.gif'
-        self.prediction_path = self.dataset_dir / 'predicted' \
-                                                / f'{self.id}_predicted.png'
+        self.prediction_prob_path = self.predicted_dir \
+                                    / f'{self.id}_predicted_prob.png'
+        self.prediction_mask_path = self.predicted_dir \
+                                    / f'{self.id}_predicted_mask.png'
         self.frangi_path = self.filtered_dir / f'{self.id}_frangi.tiff'
 
         self._rgb_data = None
@@ -111,10 +114,13 @@ class Sample:
         return features
 
 
-    def save_prediction(self, y_predicted, filter_result=True):
-        prediction = np.zeros(self.N, np.uint8)
+    def save_prediction(self, y_predicted, filter_result=False):
+        prediction = np.zeros(self.N)
         prediction[self.mask_indices] = y_predicted
         self.prediction = prediction.reshape(*self.shape)
         if filter_result:
             self.prediction = im.median_filter(self.prediction)
-        im.write(self.prediction, self.prediction_path)
+        im.write(im.img_as_uint(self.prediction),
+                 self.prediction_prob_path)
+        im.write(im.img_as_uint(self.prediction > 0.5),
+                 self.prediction_mask_path)
