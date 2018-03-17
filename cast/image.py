@@ -1,7 +1,6 @@
-from skimage import img_as_uint
-from skimage.color import rgb2grey
 from skimage.io import imread, imsave
-from skimage.filters import frangi, median
+from skimage import filters, img_as_uint
+from skimage.color import rgb2grey, rgb2hsv, rgb2lab
 from skimage.morphology import binary_erosion, binary_closing, disk
 
 from .path import ensure_dir
@@ -21,7 +20,7 @@ def write(image, path):
 def frangi_filter(image):
     if image.ndim == 3:
         image = rgb2grey(image)
-    return frangi(image)
+    return filters.frangi(image)
 
 
 def erode(image, times=1):
@@ -36,4 +35,24 @@ def closing(image, strel=disk(2)):
 
 
 def median_filter(image, strel=disk(1)):
-    return median(image, strel)
+    return filters.median(image, strel)
+
+
+def sobel_filter(image):
+    if image.ndim == 3:
+        image = rgb2grey(image)
+    return filters.sobel(image)
+
+
+def laplacian_filter(image):
+    if image.ndim == 3:
+        image = rgb2grey(image)
+    return filters.laplace(image)
+
+
+def hsv_filter(image):
+    return rgb2hsv(image)
+
+
+def lab_filter(image):
+    return rgb2lab(image)
