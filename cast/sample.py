@@ -53,6 +53,7 @@ class Sample:
     def mask(self):
         if self._mask is None:
             self._mask = im.read(self.mask_path).ravel() > 0
+            self._mask = im.erode(self._mask, 2)
         return self._mask
 
 
@@ -110,8 +111,10 @@ class Sample:
         return features
 
 
-    def save_prediction(self, y_predicted):
+    def save_prediction(self, y_predicted, closing=True):
         prediction = np.zeros(self.N, np.uint8)
         prediction[self.mask_indices] = y_predicted
         self.prediction = prediction.reshape(*self.shape)
+        if closing:
+            self.prediction = im.closing(self.prediction)
         im.write(self.prediction, self.prediction_path)
