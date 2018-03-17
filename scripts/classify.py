@@ -3,6 +3,7 @@
 from time import time
 from pathlib import Path
 
+import numpy as np
 from sklearn.externals import joblib
 from sklearn.ensemble import ExtraTreesClassifier
 
@@ -19,7 +20,7 @@ model_path = Path('/', 'tmp', 'model.pkl')
 
 
 
-force = True
+force = False
 
 if model_path.exists() and not force:
     print('Loading model...')
@@ -36,12 +37,13 @@ else:
 
 start = time()
 print('\nTesting...')
+scores = []
 for sample in test_set.samples:
     y_sample_predicted = clf.predict(sample.X)
-    score = clf.score(sample.X, sample.y)
+    scores.append(clf.score(sample.X, sample.y))
     sample.save_prediction(y_sample_predicted)
 print('Testing time:', time() - start, 'seconds')
-print('Score:', score)
+print('Score:', np.array(scores).mean())
 
 print('\nSaving segmentations...')
 # test_set.save_predictions(y_training_predicted)
