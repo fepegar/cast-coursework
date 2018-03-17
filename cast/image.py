@@ -1,8 +1,8 @@
 from skimage import img_as_uint
-from skimage.filters import frangi
 from skimage.color import rgb2grey
 from skimage.io import imread, imsave
-from skimage.morphology import binary_erosion, binary_closing
+from skimage.filters import frangi, median
+from skimage.morphology import binary_erosion, binary_closing, disk
 
 from .path import ensure_dir
 
@@ -31,5 +31,9 @@ def erode(image, times=1):
     return eroded
 
 
-def closing(image):
-    return binary_closing(image)
+def closing(image, strel=disk(2)):
+    return binary_closing(image, strel)
+
+
+def median_filter(image, strel=disk(1)):
+    return median(image, strel)
