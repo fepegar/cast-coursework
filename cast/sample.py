@@ -111,10 +111,10 @@ class Sample:
         return features
 
 
-    def save_prediction(self, y_predicted, closing=True):
+    def save_prediction(self, y_predicted, filter_result=True):
         prediction = np.zeros(self.N, np.uint8)
         prediction[self.mask_indices] = y_predicted
         self.prediction = prediction.reshape(*self.shape)
-        if closing:
-            self.prediction = im.closing(self.prediction)
+        if filter_result:
+            self.prediction = im.median_filter(self.prediction)
         im.write(self.prediction, self.prediction_path)
