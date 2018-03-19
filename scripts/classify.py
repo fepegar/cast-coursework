@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 
+import warnings
 from time import time
 from pathlib import Path
 
+import numpy as np
+from sklearn.svm import SVC
 from sklearn.externals import joblib
-from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.ensemble import GradientBoostingClassifier, ExtraTreesClassifier
 
 from cast import DataSet
+
+warnings.filterwarnings("ignore")
 
 dataset_dir = Path(Path.home(), 'Desktop', 'DRIVE')
 training_dir = dataset_dir / 'training'
@@ -18,31 +23,135 @@ test_set = DataSet(test_dir)
 model_path = Path('/', 'tmp', 'model.pkl')
 
 
-
-force = False
+force = True
 
 if model_path.exists() and not force:
     print('Loading model...')
     clf = joblib.load(str(model_path))
 else:
-    clf = ExtraTreesClassifier()
+    weight_fg = training_set.get_mean_class_imbalance()
+    weight_bg = 1 - weight_fg
+    # clf = GradientBoostingClassifier(
+    #     random_state=42,  # for reproducibility
+    # )
+
+
+    clf = ExtraTreesClassifier(class_weight='balanced',
+                               random_state=42,  # for reproducibility
+                               n_jobs=-1,
+                               # n_estimators=5,
+                              )
+
+
+    #                              #{0: weight_bg, 255: weight_fg})
+    # clf = SVC(
+    #     # probability=True,
+    #     class_weight='balanced',
+    #     verbose=2,
+    #     random_state=42,
+    # )
+    print('Gathering training data...')
+    X, y = training_set.X, training_set.y
+    print('X:', X.shape)
+    y = y > 0
+    weight = np.empty_like(y)
+    weight[y == 0] = weight_bg
+    weight[y != 0] = weight_fg
     start = time()
-    print('Training...')
-    clf.fit(training_set.X, training_set.y)
+    print(f'Training with balanced weights...')
+    clf.fit(X, y, sample_weight=weight)
     print('Training time:', time() - start, 'seconds')
 
     print('\nSaving model...')
     joblib.dump(clf, model_path)
 
+
+
+
+print('\nApplying on training set...')
+scores = []
+dices = []
+for sample in training_set.samples:
+    print(sample.id)
+
+    X, y = sample.X, sample.y
+    y = y > 0
+    weight = np.empty_like(y)
+    weight[y == 0] = weight_bg
+    weight[y != 0] = weight_fg
+    print(f'Imbalance: {sample.get_background_percentage():.2f}')
+
+    y_sample_predicted = clf.predict_proba(sample.X)
+    sample.save_prediction(y_sample_predicted[:, 1])
+
+    score = clf.score(X, y, sample_weight=weight)
+    scores.append(score)
+    print(f'Weighted score: {score:.2f}')
+
+    dice = sample.dice_score()
+    dices.append(dice)
+    print(f'Dice score: {dice:.2f}')
+
+    p, r = sample.get_precision_recall()
+    print(f'Precision: {p:.2f}')
+    print(f'Recall: {r:.2f}')
+
+    print()
+
+
+train_score = np.array(scores).mean()
+print('Mean train score:', train_score)
+
+train_dice_score = np.array(dices).mean()
+print('Mean train dice score:', train_dice_score)
+
+
+
+print()
+print()
+print()
+
+
 start = time()
 print('\nTesting...')
 scores = []
+dices = []
 for sample in test_set.samples:
-    y_sample_predicted = clf.predict_proba(sample.X)
-    # scores.append(clf.score(sample.X, sample.y))
-    sample.save_prediction(y_sample_predicted[:, 1])
-print('Testing time:', time() - start, 'seconds')
-# print('Score:', np.array(scores).mean())
+    print(sample.id)
+    X, y = sample.X, sample.y
+    y = y > 0
+    weight = np.empty_like(y)
+    weight[y == 0] = weight_bg
+    weight[y != 0] = weight_fg
+    print(f'Imbalance: {sample.get_background_percentage():.2f}')
 
-print('\nSaving segmentations...')
-# test_set.save_predictions(y_training_predicted)
+    y_sample_predicted = clf.predict_proba(sample.X)
+    sample.save_prediction(y_sample_predicted[:, 1])
+
+    score = clf.score(X, y, sample_weight=weight)
+    scores.append(score)
+    print(f'Weighted score: {score:.2f}')
+
+    dice = sample.dice_score()
+    dices.append(dice)
+    print(f'Dice score: {dice:.2f}')
+
+    p, r = sample.get_precision_recall()
+    print(f'Precision: {p:.2f}')
+    print(f'Recall: {r:.2f}')
+
+    print()
+
+print('Testing time:', time() - start, 'seconds')
+test_score = np.array(scores).mean()
+print('Mean test score:', test_score)
+
+test_dice_score = np.array(dices).mean()
+print('Mean test dice score:', test_dice_score)
+
+
+print()
+print()
+
+print('Scores difference:', train_score - test_score)
+print('Dice scores difference:', train_dice_score - test_dice_score)
