@@ -56,3 +56,14 @@ def hsv_filter(image):
 
 def lab_filter(image):
     return rgb2lab(image)
+
+
+def get_confusion_map(array1, array2):
+    a = array1.astype(bool).ravel()
+    b = array2.astype(bool).ravel()
+    TP = (a & b).sum()
+    FP = ((a ^ b) & a).sum()
+    FN = ((a ^ b) & b).sum()
+    TN = a.size - TP - FP - FN
+    confusion_map = dict(TP=TP, FP=FP, FN=FN, TN=TN)
+    return confusion_map

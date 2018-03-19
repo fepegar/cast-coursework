@@ -157,6 +157,13 @@ class Sample:
         return self._laplacian_data
 
 
+    def get_confusion_map(self):
+        binary_labels = self.labels
+        binary_prediction = im.read(self.prediction_mask_path)
+        confusion_map = im.get_confusion_map(binary_labels, binary_prediction)
+        return confusion_map
+
+
     def get_features(self):
         # Color
         rgb_features = self.rgb_data.reshape(self.N, 3)
