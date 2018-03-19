@@ -90,6 +90,7 @@ class Sample:
 
     @property
     def labels(self):
+        """Return the ground truth image"""
         if self._labels is None:
             self._labels = im.read(self.manual_1_path).ravel()
         return self._labels
@@ -113,6 +114,7 @@ class Sample:
 
     @property
     def X(self):
+        """Return the masked features array"""
         features = self.get_features()
         X = features[self.mask_indices, :]
         return X
@@ -120,6 +122,7 @@ class Sample:
 
     @property
     def y(self):
+        """Return a vector with the masked ground truth labels"""
         y = self.labels[self.mask_indices]
         return y
 
