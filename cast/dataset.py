@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 
 from .sample import Sample
@@ -5,7 +7,7 @@ from .sample import Sample
 class DataSet:
 
     def __init__(self, data_dir):
-        self.dir = data_dir
+        self.dir = Path(data_dir)
         self.images_dir = self.dir / 'images'
         self.mask_dir = self.dir / 'mask'
         self.manual_dir = self.dir / '1st_manual'
