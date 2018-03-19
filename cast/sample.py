@@ -164,6 +164,11 @@ class Sample:
         return confusion_map
 
 
+    def get_background_percentage(self):
+        bg_pixels = np.count_nonzero(self.y == 0)
+        return bg_pixels / self.y.size
+
+
     def get_features(self):
         # Color
         rgb_features = self.rgb_data.reshape(self.N, 3)
