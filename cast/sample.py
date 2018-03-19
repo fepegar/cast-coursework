@@ -164,6 +164,25 @@ class Sample:
         return confusion_map
 
 
+    def dice_score(self):
+        confusion_map = self.get_confusion_map()
+        TP = confusion_map['TP']
+        FP = confusion_map['FP']
+        FN = confusion_map['FN']
+        dice_score = 2 * TP / (2 * TP + FP + FN)
+        return dice_score
+
+
+    def get_precision_recall(self):
+        confusion_map = self.get_confusion_map()
+        TP = confusion_map['TP']
+        FP = confusion_map['FP']
+        FN = confusion_map['FN']
+        precision = TP / (TP + FP)
+        recall = TP / (TP + FN)
+        return precision, recall
+
+
     def get_background_percentage(self):
         bg_pixels = np.count_nonzero(self.y == 0)
         return bg_pixels / self.y.size

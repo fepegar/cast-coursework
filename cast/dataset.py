@@ -19,7 +19,7 @@ class DataSet:
         self.mask_vector_path = self.features_dir / 'mask.npy'
         self.labels_vector_path = self.features_dir / 'labels.npy'
 
-        self.rgb_paths = self.images_dir.glob('*.tif')
+        self.rgb_paths = sorted(list(self.images_dir.glob('*.tif')))
         self.samples = [Sample(path) for path in self.rgb_paths]
 
 
@@ -42,3 +42,8 @@ class DataSet:
             y_predicted_sample = y_predicted[idx_ini : idx_fin]
             sample.save_prediction(y_predicted_sample)
             idx_ini = idx_fin
+
+
+    def get_mean_class_imbalance(self):
+        percentages = [s.get_background_percentage() for s in self.samples]
+        return np.mean(percentages)
