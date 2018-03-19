@@ -3,7 +3,6 @@
 from time import time
 from pathlib import Path
 
-import numpy as np
 from sklearn.externals import joblib
 from sklearn.ensemble import ExtraTreesClassifier
 
