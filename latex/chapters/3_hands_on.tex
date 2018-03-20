@@ -2,6 +2,14 @@
 
 % What did you choose to experiment with and why?
 
+A more classical machine learning approach has been chosen to partially replicate the study. An extremely randomised decision tree (or Extra-Tree) \cite{geurts_extremely_2006} model has been fit to perform fully automatic vascular segmentation on one of the datasets used in the study, the DRIVE dataset \cite{staal_ridge-based_2004}. This model has been chosen for its simplicity to implement using scikit-learn \cite{pedregosa_scikit-learn:_2011}.
+
 % Explain your setup
 
+The DRIVE dataset consists on 20 training samples and 20 test samples. Each sample has an asocciated mask corresponding to the circular field of view and manual segmentations by human experts (one for the training samples and two for the test samples).
+
+The code used to run the experiments is available online \footnote{\href{https://github.com/fepegar/cast-coursework}{https://github.com/fepegar/cast-coursework}}. The 12 features used for classification are the 3 RGB channels, the 3 HSV channels, the 3 L*a*b* channels, a Frangi vesselness filter \cite{frangi_multiscale_1998}, a Sobel filter and a Laplacian filter. The model has been trained using different weights for the foreground (vessels) and background (rest) classes, since most of the masked pixels of each label image are part of the background (87\% $\pm$ 2\%). The prediction are saved as probabilities of foreground class.
+
 % Report the results you obtained. Negative results are also interesting
+
+Figure \ref{fig:collage} shows the segmentation results for the samples with best, median and worst Dice scores.
