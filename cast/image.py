@@ -1,3 +1,5 @@
+import numpy as np
+import matplotlib.pyplot as plt
 from skimage.io import imread, imsave
 from skimage import filters, img_as_uint
 from skimage.color import rgb2grey, rgb2hsv, rgb2lab
@@ -15,6 +17,13 @@ def write(image, path):
     if image.dtype == bool:
         image = img_as_uint(image)
     return imsave(str(path), image)
+
+
+def grey2rgb(grey, mask=None):
+    rgb = plt.cm.viridis(grey / grey.max(), bytes=True)[..., :-1]
+    if mask is not None:
+        rgb[mask == 0] = 0
+    return rgb
 
 
 def frangi_filter(image):
@@ -67,3 +76,10 @@ def get_confusion_map(array1, array2):
     TN = a.size - TP - FP - FN
     confusion_map = dict(TP=TP, FP=FP, FN=FN, TN=TN)
     return confusion_map
+
+
+def to_uint8(image):
+    image -= image.min()
+    image /= image.max()
+    image *= 255
+    return image.astype(np.uint8)
