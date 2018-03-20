@@ -26,18 +26,25 @@ class Sample:
         self.filtered_dir = self.dataset_dir / 'filtered'
         self.predicted_dir = self.dataset_dir / 'predicted'
         self.rgb_path = image_path
+
         self.manual_1_path = self.dataset_dir / '1st_manual' \
                                               / f'{self.id}_manual1.gif'
         self.manual_2_path = self.dataset_dir / '2st_manual' \
                                               / f'{self.id}_manual2.gif'
         self.mask_path = self.dataset_dir / 'mask' \
                                           / f'{self.id}_{self.type}_mask.gif'
+
+        # Predictions
         self.prediction_prob_path = self.predicted_dir \
                                     / f'{self.id}_predicted_prob.png'
         self.prediction_prob_rgb_path = self.predicted_dir \
                                     / f'{self.id}_predicted_prob_rgb.png'
         self.prediction_mask_path = self.predicted_dir \
                                     / f'{self.id}_predicted_mask.png'
+        self.driu_path = self.dataset_dir / 'driu' \
+                                              / f'{self.id}_test.png'
+
+        # Filters
         self.frangi_path = self.filtered_dir / f'{self.id}_frangi.tiff'
         self.sobel_path = self.filtered_dir / f'{self.id}_sobel.tiff'
         self.laplacian_path = self.filtered_dir / f'{self.id}_laplacian.tiff'
@@ -94,7 +101,7 @@ class Sample:
     def labels(self):
         """Return the ground truth image"""
         if self._labels is None:
-            self._labels = im.read(self.manual_1_path).ravel()
+            self._labels = im.read(self.manual_1_path)
         return self._labels
 
 
@@ -125,7 +132,7 @@ class Sample:
     @property
     def y(self):
         """Return a vector with the masked ground truth labels"""
-        y = self.labels[self.mask_indices]
+        y = self.labels.ravel()[self.mask_indices]
         return y
 
 
@@ -196,6 +203,11 @@ class Sample:
         lab_features = self.lab_data.reshape(self.N, 3)
         hsv_features = self.hsv_data.reshape(self.N, 3)
 
+        # redness_test = rgb_features[:, 0] \
+        #                - rgb_features[:, 1] \
+        #                - rgb_features[:, 2]
+        # redness_test = redness_test.reshape(-1, 1)
+
         # Edges and vesselness
         sobel_features = self.sobel_data.reshape(self.N, 1)
         frangi_features = self.frangi_data.reshape(self.N, 1)
@@ -207,6 +219,7 @@ class Sample:
             sobel_features,
             frangi_features,
             laplacian_features,
+            # redness_test,
         ]
         features = np.hstack(features)
         return features
