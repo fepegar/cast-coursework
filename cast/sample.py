@@ -34,6 +34,8 @@ class Sample:
                                           / f'{self.id}_{self.type}_mask.gif'
         self.prediction_prob_path = self.predicted_dir \
                                     / f'{self.id}_predicted_prob.png'
+        self.prediction_prob_rgb_path = self.predicted_dir \
+                                    / f'{self.id}_predicted_prob_rgb.png'
         self.prediction_mask_path = self.predicted_dir \
                                     / f'{self.id}_predicted_mask.png'
         self.frangi_path = self.filtered_dir / f'{self.id}_frangi.tiff'
@@ -83,8 +85,8 @@ class Sample:
     @property
     def mask(self):
         if self._mask is None:
-            self._mask = im.read(self.mask_path).ravel() > 0
-            self._mask = im.erode(self._mask, 2)
+            self._mask = im.read(self.mask_path)
+            self._mask = im.erode(self._mask, 2) > 0
         return self._mask
 
 
@@ -98,7 +100,7 @@ class Sample:
 
     @property
     def mask_indices(self):
-        return np.where(self.mask)[0]
+        return np.where(self.mask.ravel())[0]
 
 
     @property
@@ -216,7 +218,8 @@ class Sample:
         self.prediction = prediction.reshape(*self.shape)
         if filter_result:
             self.prediction = im.median_filter(self.prediction)
-        im.write(im.img_as_uint(self.prediction),
-                 self.prediction_prob_path)
+        prediction_rgb = im.grey2rgb(self.prediction, self.mask)
+        im.write(prediction_rgb, self.prediction_prob_rgb_path)
+        im.write(self.prediction, self.prediction_prob_path)
         im.write(im.img_as_uint(self.prediction > 0.5),
                  self.prediction_mask_path)
