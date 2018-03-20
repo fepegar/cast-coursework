@@ -44,6 +44,6 @@ class DataSet:
             idx_ini = idx_fin
 
 
-    def get_mean_class_imbalance(self):
+    def get_samples_class_imbalance(self):
         percentages = [s.get_background_percentage() for s in self.samples]
-        return np.mean(percentages)
+        return np.array(percentages)
