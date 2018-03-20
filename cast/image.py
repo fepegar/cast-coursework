@@ -20,6 +20,7 @@ def write(image, path):
 
 
 def grey2rgb(grey, mask=None):
+    #pylint: disable=E1101
     rgb = plt.cm.viridis(grey / grey.max(), bytes=True)[..., :-1]
     if mask is not None:
         rgb[mask == 0] = 0
@@ -83,3 +84,15 @@ def to_uint8(image):
     image /= image.max()
     image *= 255
     return image.astype(np.uint8)
+
+
+def compare(bin1, bin2):
+    """bin1 is green, bin2 is magenta"""
+    bin1 = bin1.astype(bool) * 255
+    bin2 = bin2.astype(bool) * 255
+    si, sj = bin1.shape
+    rgb = np.zeros((si, sj, 3), np.uint8)
+    rgb[..., 0] = bin2
+    rgb[..., 1] = bin1
+    rgb[..., 2] = bin2
+    return rgb
