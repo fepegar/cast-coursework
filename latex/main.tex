@@ -4,7 +4,8 @@
 %
 \documentclass[runningheads]{llncs}
 
-\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}  % for my name
+\usepackage{hyperref}        % hyperlinks
 
 %
 \usepackage{graphicx}
@@ -23,7 +24,7 @@
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
-\author{Fernando Pérez-García \inst{1}\orcidID{0000-0001-9090-3024}}
+\author{Fernando Pérez-García \inst{1,2}\orcidID{0000-0001-9090-3024}}
 %
 \authorrunning{F. Pérez-García}
 % First names are abbreviated in the running head.
@@ -33,19 +34,14 @@
 University College London, United Kingdom}
 %
 \maketitle              % typeset the header of the contribution
-%
-% \begin{abstract}
-% The abstract should briefly summarize the contents of the paper in
-% 15--250 words.
-%
-% \keywords{First keyword  \and Second keyword \and Another keyword.}
-% \end{abstract}
-%
-%
-%
+
 
 \input{chapters/example}
 \input{chapters/1_intro}
+\input{chapters/2_technical_summary}
+\input{chapters/3_hands_on}
+\input{chapters/4_discussion}
+\input{chapters/5_conclusion}
 
 
 %
@@ -54,32 +50,7 @@ University College London, United Kingdom}
 % BibTeX users should specify bibliography style 'splncs04'.
 % References will then be sorted and formatted in the correct style.
 %
-% \bibliographystyle{splncs04}
-% \bibliography{mybibliography}
-%
-\begin{thebibliography}{8}
-\bibitem{ref_article1}
-Author, F.: Article title. Journal \textbf{2}(5), 99--110 (2016)
+\bibliographystyle{splncs04}
+\bibliography{references}
 
-\bibitem{ref_lncs1}
-Author, F., Author, S.: Title of a proceedings paper. In: Editor,
-F., Editor, S. (eds.) CONFERENCE 2016, LNCS, vol. 9999, pp. 1--13.
-Springer, Heidelberg (2016). \doi{10.10007/1234567890}
-
-\bibitem{ref_book1}
-Author, F., Author, S., Author, T.: Book title. 2nd edn. Publisher,
-Location (1999)
-
-\bibitem{ref_proc1}
-Author, A.-B.: Contribution title. In: 9th International Proceedings
-on Proceedings, pp. 1--2. Publisher, Location (2010)
-
-\bibitem{ref_url1}
-LNCS Homepage, \url{http://www.springer.com/lncs}. Last accessed 4
-Oct 2017
-\end{thebibliography}
-
-
-% \bibliographystyle{unsrt}
-% \bibliography{references}
 \end{document}
