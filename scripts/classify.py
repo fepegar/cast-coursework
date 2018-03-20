@@ -29,8 +29,6 @@ if model_path.exists() and not force:
     print('Loading model...')
     clf = joblib.load(str(model_path))
 else:
-    weight_fg = training_set.get_mean_class_imbalance()
-    weight_bg = 1 - weight_fg
     # clf = GradientBoostingClassifier(
     #     random_state=42,  # for reproducibility
     # )
@@ -42,18 +40,13 @@ else:
                                # n_estimators=5,
                               )
 
-
-    #                              #{0: weight_bg, 255: weight_fg})
-    # clf = SVC(
-    #     # probability=True,
-    #     class_weight='balanced',
-    #     verbose=2,
-    #     random_state=42,
-    # )
     print('Gathering training data...')
     X, y = training_set.X, training_set.y
     print('X:', X.shape)
     y = y > 0
+
+    weight_fg = training_set.get_samples_class_imbalance().mean()
+    weight_bg = 1 - weight_fg
     weight = np.empty_like(y)
     weight[y == 0] = weight_bg
     weight[y != 0] = weight_fg
@@ -76,6 +69,9 @@ for sample in training_set.samples:
 
     X, y = sample.X, sample.y
     y = y > 0
+
+    weight_fg = training_set.get_samples_class_imbalance().mean()
+    weight_bg = 1 - weight_fg
     weight = np.empty_like(y)
     weight[y == 0] = weight_bg
     weight[y != 0] = weight_fg
@@ -120,6 +116,9 @@ for sample in test_set.samples:
     print(sample.id)
     X, y = sample.X, sample.y
     y = y > 0
+
+    weight_fg = test_set.get_samples_class_imbalance().mean()
+    weight_bg = 1 - weight_fg
     weight = np.empty_like(y)
     weight[y == 0] = weight_bg
     weight[y != 0] = weight_fg
