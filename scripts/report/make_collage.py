@@ -3,15 +3,15 @@ from pathlib import Path
 from skimage import io
 import matplotlib.pyplot as plt
 
-from cast import DataSet
+from cast import test_set
 from cast import image as im
 
-dataset_dir = Path(Path.home(), 'Desktop', 'DRIVE')
-training_dir = dataset_dir / 'training'
-test_dir = dataset_dir / 'test'
 
-test_set = DataSet(test_dir)
+repo_dir = Path(__file__).parents[2]
+figures_dir = repo_dir / 'latex' / 'figures'
+output_path = figures_dir / 'collage.png'
 
+# Previously measured
 best = test_set.samples[1]
 median = test_set.samples[12]
 worst = test_set.samples[2]
@@ -39,4 +39,4 @@ for row, sample in enumerate(samples):
 plt.subplots_adjust(left=0, bottom=0, right=1, top=1,
                     wspace=0.05, hspace=0.05)
 
-fig.savefig('/tmp/collage.png', dpi=400, bbox_inches='tight')
+fig.savefig(output_path, dpi=400, bbox_inches='tight')
