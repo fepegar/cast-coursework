@@ -29,7 +29,7 @@ class Sample:
 
         self.manual_1_path = self.dataset_dir / '1st_manual' \
                                               / f'{self.id}_manual1.gif'
-        self.manual_2_path = self.dataset_dir / '2st_manual' \
+        self.manual_2_path = self.dataset_dir / '2nd_manual' \
                                               / f'{self.id}_manual2.gif'
         self.mask_path = self.dataset_dir / 'mask' \
                                           / f'{self.id}_{self.type}_mask.gif'
