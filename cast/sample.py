@@ -173,8 +173,18 @@ class Sample:
         return confusion_map
 
 
-    def dice_score(self):
-        confusion_map = self.get_confusion_map()
+    def get_driu_confusion_map(self):
+        binary_labels = self.labels
+        driu_prediction = im.read(self.driu_path).astype(float)
+        driu_prediction /= driu_prediction.max()
+        binary_prediction = driu_prediction > 0.5
+        confusion_map = im.get_confusion_map(binary_labels, binary_prediction)
+        return confusion_map
+
+
+    def dice_score(self, confusion_map=None):
+        if confusion_map is None:
+            confusion_map = self.get_confusion_map()
         TP = confusion_map['TP']
         FP = confusion_map['FP']
         FN = confusion_map['FN']
