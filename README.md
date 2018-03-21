@@ -3,5 +3,12 @@
 
 ## Installation
 ```
-pip install git+https://github.com/fepegar/cast-coursework.git
+# Create a conda environment...
+conda create -n cast python=3
+
+# ...and activate it
+source activate cast
+
+# Download and install everything in the environment
+pip install -e git+https://github.com/fepegar/cast-coursework.git
 ```
