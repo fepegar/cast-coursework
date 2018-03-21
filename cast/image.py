@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from skimage.io import imread, imsave
 from skimage import filters, img_as_uint
 from skimage.color import rgb2grey, rgb2hsv, rgb2lab
@@ -21,6 +20,7 @@ def write(image, path):
 
 def grey2rgb(grey, mask=None):
     #pylint: disable=E1101
+    import matplotlib.pyplot as plt
     rgb = plt.cm.viridis(grey / grey.max(), bytes=True)[..., :-1]
     if mask is not None:
         rgb[mask == 0] = 0
