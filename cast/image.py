@@ -8,14 +8,14 @@ from .path import ensure_dir
 
 
 def read(path):
-    return imread(str(path))
+    return imread(path)
 
 
 def write(image, path):
     ensure_dir(path)
     if image.dtype == bool:
         image = img_as_uint(image)
-    return imsave(str(path), image)
+    return imsave(path, image)
 
 
 def grey2rgb(grey, mask=None):
