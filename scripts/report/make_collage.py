@@ -34,15 +34,12 @@ for row, sample in enumerate(samples):
     labels1 = sample.labels
     axes[row, 0].imshow(sample.rgb_data)
     prediction = normalise(im.read(sample.prediction_prob_path))
-    axes[row, 1].imshow(prediction)
+    axes[row, 1].imshow(im.grey2rgb(prediction, mask=sample.mask))
     driu = normalise(im.read(sample.driu_path).astype(float))
     axes[row, 2].imshow(im.compare(labels1, prediction > 0.5))
-    axes[row, 3].imshow(driu)
+    axes[row, 3].imshow(im.grey2rgb(driu, mask=sample.mask))
     axes[row, 4].imshow(im.compare(labels1, driu > 0.5))
     labels2 = normalise(im.read(sample.manual_2_path)[..., 0])
-    import numpy as np
-    print(np.unique(labels1))
-    print(np.unique(labels2))
     axes[row, 5].imshow(im.compare(labels1, labels2))
 
 # This does not seem to work
