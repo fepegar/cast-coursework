@@ -213,11 +213,6 @@ class Sample:
         lab_features = self.lab_data.reshape(self.N, 3)
         hsv_features = self.hsv_data.reshape(self.N, 3)
 
-        # redness_test = rgb_features[:, 0] \
-        #                - rgb_features[:, 1] \
-        #                - rgb_features[:, 2]
-        # redness_test = redness_test.reshape(-1, 1)
-
         # Edges and vesselness
         sobel_features = self.sobel_data.reshape(self.N, 1)
         frangi_features = self.frangi_data.reshape(self.N, 1)
@@ -229,7 +224,6 @@ class Sample:
             sobel_features,
             frangi_features,
             laplacian_features,
-            # redness_test,
         ]
         features = np.hstack(features)
         return features
