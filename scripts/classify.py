@@ -5,9 +5,8 @@ from time import time
 from pathlib import Path
 
 import numpy as np
-from sklearn.svm import SVC
 from sklearn.externals import joblib
-from sklearn.ensemble import GradientBoostingClassifier, ExtraTreesClassifier
+from sklearn.ensemble import ExtraTreesClassifier
 
 from cast import DataSet
 
@@ -29,11 +28,6 @@ if model_path.exists() and not force:
     print('Loading model...')
     clf = joblib.load(str(model_path))
 else:
-    # clf = GradientBoostingClassifier(
-    #     random_state=42,  # for reproducibility
-    # )
-
-
     clf = ExtraTreesClassifier(class_weight='balanced',
                                random_state=42,  # for reproducibility
                                n_jobs=-1,
