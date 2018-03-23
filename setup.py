@@ -9,6 +9,6 @@ setup(name='cast',
           'scikit-image',
           'scikit-learn',
           'numpy',
-          'matplotlib',
+          'matplotlib',  # on macOS matplotlib should be installed with conda
           ],
      )
