@@ -17,21 +17,21 @@ The code used to run the experiments is available online\footnote{\href{https://
 
 Figure \ref{fig:collage} shows the segmentation results for the samples with highest, median and lowest Dice scores between the probability maps thresholded at 0.5 and the first manual segmentation. Most of the false negatives are smaller vessels, and most of the false positives are noisy predictions of isolated images. In DRIU, most of the false negatives are small vessels that were segmented by only one of the annotators, while most of the false positives are borders around the thinner vessels.
 
-\begin{figure}
+\begin{figure}[H]
   \includegraphics[width=\textwidth]{figures/collage}
   \caption{Results with highest (top), median (middle) and lowest (bottom) Dice scores using a 0.5 threshold. From left to right: acquired image of the retinal fundus; vessel probabilities using Extra-Trees; comparison of Extra-Trees thresholded probabilities to manual segmentation; vessel probabilities using DRIU; comparison of DRIU thresholded probabilities to manual segmentation; comparison of manual segmentation from first and second annotators. When comparing the binary images: first annotator is taken as groud truth; white pixels represent true positives; black pixels represent true negatives; magenta pixels represent false positives; and green pixels represent false negatives. The probability maps have been masked to show only the acquired field of view; higher lightness represents higher foreground probability} \label{fig:collage}
 \end{figure}
 
 Figure \ref{fig:dice} shows all the Dice scores for both methods. DRIU presents higher scores for all cases.
 
-\begin{figure}
+\begin{figure}[H]
   \includegraphics[width=\textwidth]{figures/dices}
   \caption{Dice scores of both methods between probabilities thresholded at 0.5 and ground truth (first annotator).} \label{fig:dice}
 \end{figure}
 
 Figure \ref{fig:importance} shows the importance of each pixel feature for the classification. As expected, the Frangi filter is the most relevant feature used by the algorithm, followed by the Sobel and Laplacian filters. Pixels in vessels seem to be much better represented by spatial filters than by colour features.
 
-\begin{figure}
+\begin{figure}[H]
   \includegraphics[width=\textwidth]{figures/importances}
   \caption{Features importance for the forest, along with their inter-trees variability (standard deviation of the importance for each Extra-Trees estimator).} \label{fig:importance}
 \end{figure}
