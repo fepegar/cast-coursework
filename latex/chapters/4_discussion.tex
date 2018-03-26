@@ -16,23 +16,26 @@ After writing and running the code for preprocessing and training, I performed a
 \subsection{What I learnt}
 
 Some key aspects I learnt during the hands-on experiment:
-\begin{enumerate}
-  \item \textbf{Reproducibility} At first glance, the authors seem to have done a very good job in terms of reproducibility by sharing their results, their models and some code for testing. However, the need for an outdated version of a C++ library made the reproduction impossible. Furthermore, they did not share the code using for preprocessing and training. The approach I will use for my research is sharing as much code and data as possible in open repositories and databases, and make reproducibility as simple as possible. A potential solution for installation issues would be using a script that installs a customised \texttt{conda} \cite{noauthor_conda_nodate} environment with all the needed libraries in one single command line. Also, if needed, the software could be distributed inside a Docker container \cite{noauthor_docker_nodate} for higher compatibility
 
-  \item \textbf{Data} Retrieval and managing of data is an integral part of any medical imaging project, but it might be even more crucial when machine learning is involved. Some aspects that may need extra attention include:
-    \begin{itemize}
-      \item Getting data may be difficult. Working closely with clinicians and technicians to improve the amount and quality of the data is important in the field of biomedical engineering. Public datasets are very useful for the community
-      \item It is beneficial to use a well tested, centralised, backed up and anonymised storage system for the data
-      \item Designing an object-oriented piece of software capable of handling the data management in a high-level, user-transparent fashion means a faster software development and experimentation
-    \end{itemize}
+\subsubsection{Reproducibility}
 
-  \item \textbf{Training} Some aspects related to training the model:
-    \begin{itemize}
-      \item Choosing an appropriate loss function is important. Vascular imaging suffers from highly imbalanced data, so it is important to train and test using class weighting. Even though the training has been performed taking the class imbalance into account, a more specific loss-function such as \cite{sudre_generalised_2017} or \cite{fidon_generalised_2018} might have given better results
-      \item Data augmentation could have helped generalise the training
-      \item The mean Dice score is 0.998 on the training set and 0.545 on the test set, which shows a clear overfitting of the model. Regularisation techniques should be used to improve generalisability of the model.
-    \end{itemize}
-\end{enumerate}
+At first glance, the authors seem to have done a very good job in terms of reproducibility by sharing their results, their models and some code for testing. However, the need for an outdated version of a C++ library made the reproduction impossible. Furthermore, they did not share the code using for preprocessing and training. The approach I will use for my research is sharing as much code and data as possible in open repositories and databases, and make reproducibility as simple as possible. A potential solution for installation issues would be using a script that installs a customised \texttt{conda} \cite{noauthor_conda_nodate} environment with all the needed libraries in one single command line. Also, if needed, the software could be distributed inside a Docker container \cite{noauthor_docker_nodate} for higher compatibility
+
+\subsubsection{Data}
+Retrieval and managing of data is an integral part of any medical imaging project, but it might be even more crucial when machine learning is involved. Some aspects that may need extra attention include:
+\begin{itemize}
+  \item Getting data may be difficult. Working closely with clinicians and technicians to improve the amount and quality of the data is important in the field of biomedical engineering. Public datasets are very useful for the community
+  \item It is beneficial to use a well tested, centralised, backed up and anonymised storage system for the data
+  \item Designing an object-oriented piece of software capable of handling the data management in a high-level, user-transparent fashion means a faster software development and experimentation
+\end{itemize}
+
+\subsubsection{Training}
+Some aspects related to training the model:
+\begin{itemize}
+  \item Choosing an appropriate loss function is important. Vascular imaging suffers from highly imbalanced data, so it is important to train and test using class weighting. Even though the training has been performed taking the class imbalance into account, a more specific loss-function such as \cite{sudre_generalised_2017} or \cite{fidon_generalised_2018} might have given better results
+  \item Data augmentation could have helped generalise the training
+  \item The mean Dice score is 0.998 on the training set and 0.545 on the test set, which shows a clear overfitting of the model. Regularisation techniques should be used to improve generalisability of the model.
+\end{itemize}
 
 
 % What are the key limitations you identified?
