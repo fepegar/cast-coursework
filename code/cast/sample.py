@@ -132,7 +132,7 @@ class Sample:
     @property
     def y(self):
         """Return a vector with the masked ground truth labels"""
-        y = self.labels.ravel()[self.mask_indices]
+        y = self.labels.ravel()[self.mask_indices] > 0
         return y
 
 
