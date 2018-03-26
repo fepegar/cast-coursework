@@ -11,5 +11,5 @@ conda create -n cast python=3
 source activate cast
 
 # Download and install everything
-pip install -e git+https://github.com/fepegar/cast-coursework.git
+pip install -e git+https://github.com/fepegar/cast-coursework.git#egg=cast
 ```
