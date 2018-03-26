@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from cast import test_set
 
-repo_dir = Path(__file__).parents[2]
+repo_dir = Path(__file__).parents[3]
 figures_dir = repo_dir / 'latex' / 'figures'
 output_path = figures_dir / 'dices.png'
 
@@ -19,4 +19,9 @@ axis.plot((0, 1), (0, 1), alpha=0.25, color='gray')
 axis.set_aspect('equal')
 axis.set_xlabel('Extra-Trees')
 axis.set_ylabel('DRIU')
+
+fig.subplots_adjust(left=0, bottom=0.1,
+                    right=1, top=0.99,
+                    wspace=0, hspace=0)
+
 fig.savefig(output_path, dpi=400)
