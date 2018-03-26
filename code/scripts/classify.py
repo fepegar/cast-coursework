@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import warnings
 from time import time
 from pathlib import Path
 
@@ -10,7 +9,6 @@ from sklearn.ensemble import ExtraTreesClassifier
 
 from cast import DataSet
 
-warnings.filterwarnings("ignore")
 
 dataset_dir = Path(Path.home(), 'Desktop', 'DRIVE')
 training_dir = dataset_dir / 'training'

@@ -1,3 +1,5 @@
+from warnings import filterwarnings
+
 import numpy as np
 from skimage.io import imread, imsave
 from skimage import filters, img_as_uint
@@ -8,6 +10,7 @@ from .path import ensure_dir
 
 
 def read(path):
+    filterwarnings("ignore")
     return imread(str(path))
 
 
