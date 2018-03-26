@@ -1,3 +1,7 @@
+"""
+Based on http://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html
+"""
+
 from pathlib import Path
 
 import matplotlib.pyplot as plt
