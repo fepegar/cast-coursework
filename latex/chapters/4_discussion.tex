@@ -2,6 +2,51 @@
 
 % Highlight the aspects that your learned from the paper and from the hands-on experiments you performed
 
+\subsection{What I did}
+
+The first approach I followed was applying the models trained by the authors to new retinal image datasets. This seemed feasible since they created a website from which one can download their models and results, with installation instructions. However, there happened to be a major difficulty. In order to test their models, a specific fork of the deep learning framework Caffe (Holistically-Nested Edge Detection (HED) \cite{xie_holistically-nested_2015}) was needed. Caffe is written in C++ and it has multiple dependencies that need to be installed beforehand so that it can be compiled. The code for HED was released in 2014. Since then, multiple issues related to installation and compilation have been fixed on the main branch of Caffe. While trying to install HED I ran into multiple problems both on Ubuntu and macOS: libraries compatibility, errors that have been fixed in the main Caffe branch and Makefiles that needed to be modified substantially without success. After around 10 hours trying to install the software on both operating systems, I decided that a different approach might be more suitable.
+
+I decided to use the U-Net segmentation architecture \cite{ronneberger_u-net:_2015}, but all the implementations I found were not generic enough and needed preprocessing of the data. I ended up using a more classic machine learning approach with algorithms included in scikit-learn \cite{pedregosa_scikit-learn:_2011}. I experimented with different classifiers such as support vector machines (SVM), Gradient Boosted Regression Trees (GBRT) and Extra-Trees. SVM and GBRT have better regularisation options, but Extra-Trees is faster, which allows for more experimentation.
+
+The more immediate features that could be used are the RGB values. However it seemed clear that spatial features would yield better results than pure colour (or luminosity) values, therefore I chose some potential relevant candidates such as the Frangi vesselness filter or some edge filters.
+
+
+\subsection{What I learnt}
+
+Some key aspects I learnt during the hands-on experiment:
+\begin{enumerate}
+  \item \textbf{Reproducibility} At first glance, the authors seem to have done a very good job in terms of reproducibility by sharing their results, their models and some code for testing. However, the need for an outdated version of a C++ library made the task impossible. Also, they did not share the code using for preprocessing and training. The approach I will use for my research is sharing as much code and data as possible in open repositories and databases, and make reproducibility as simple as possible. A potential solution for installation issues would be using a script that installs a customised \texttt{conda} \cite{noauthor_conda_nodate} environment in one single command line. Also, if needed, the software could also be distributed inside a Docker container \cite{noauthor_docker_nodate} for higher compatibility
+
+  \item \textbf{Data} Retrieval and managing of data is an important part of any medical imaging project, but it might be even more crucial when machine learning is involved. Some aspects that may need extra attention include:
+    \begin{itemize}
+      \item Work closely with clinicians and technicians to improve the amount and quality of the data
+      \item Use a well tested, centralised, backed up and anonymised storage system for the data
+      \item Design an object-oriented piece of software capable of handling the data management in a high-level, user-transparent fashion
+    \end{itemize}
+
+  \item \textbf{Training} Some aspects related to training the model:
+    \begin{itemize}
+      \item Choosing an appropriate loss function is important. Vascular imaging suffers from highly imbalanced data, so it is important to train and test using class weighting. Even though the training has been performed taking the class imbalance into account, a more specific loss-function such as \cite{sudre_generalised_2017} or \cite{fidon_generalised_2018} might have given better results
+      \item Data augmentation could have helped generalise the training
+      \item The mean Dice score is 0.998 on the training set and 0.545 on the test set, which shows a clear overfitting of the model. Regularisation techniques should be used to improve generalisability of the model.
+    \end{itemize}
+\end{enumerate}
+
+
 % What are the key limitations you identified?
+\subsection{Limitations}
+
+\subsubsection{Generalisability}
+The authors trained one model per dataset. This does not provide a good approximation of their method's performance predicting vascular segmentation for any kind of retinal image. A more robust approach might be preprocessing the images from all the datasets so that the network can be trained once and generalise better to new data.
+
+\subsubsection{Reproducibility}
+As stated before, the reproducibility of the project could have been improved using precompiled binaries of HED or a Docker container.
+
+\subsubsection{Discussion}
+The authors do not mention any limitations of their method.
+
+\subsubsection{Validation}
+The authors do not share the code or the parameters used to compare against the traditional and state-of-the-art approaches.
+
 
 % Discuss the non-obvious connections you found in this work with methods from other fields / applications
