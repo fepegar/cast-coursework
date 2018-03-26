@@ -4,24 +4,26 @@
 
 \subsection{What I did}
 
-The first approach I followed was applying the models trained by the authors to new retinal image datasets. This seemed feasible since they created a website from which one can download their models and results, with installation instructions. However, there happened to be a major difficulty. In order to test their models, a specific fork of the deep learning framework Caffe (Holistically-Nested Edge Detection (HED) \cite{xie_holistically-nested_2015}) was needed. Caffe is written in C++ and it has multiple dependencies that need to be installed beforehand so that it can be compiled. The code for HED was released in 2014. Since then, multiple issues related to installation and compilation have been fixed on the main branch of Caffe. While trying to install HED I ran into multiple problems both on Ubuntu and macOS: libraries compatibility, errors that have been fixed in the main Caffe branch and Makefiles that needed to be modified substantially without success. After around 10 hours trying to install the software on both operating systems, I decided that a different approach might be more suitable.
+My first approach was applying the models trained by the authors to new retinal image datasets. This seemed feasible since they created a website from which their models and results can be downloaded, with installation instructions included. However, there happened to be a major difficulty. In order to test their models, a specific fork of the deep learning framework Caffe \cite{jia_caffe:_2014} called Holistically-nested Edge Detection (HED) \cite{xie_holistically-nested_2015} was needed. Caffe is written in C++ and it has multiple dependencies that need to be installed beforehand in order to be compiled. The code for HED was released in 2014. Since then, multiple issues related to installation and compilation have been fixed on the main branch of Caffe. I ran into multiple problems while trying to install HED on both Linux and macOS: libraries incompatibility, configuration errors that have been fixed in the main Caffe branch and Makefiles that needed to be modified substantially without success. After around 10 hours trying to install the software on both operating systems, I decided that a different approach might be more suitable.
 
 I decided to use the U-Net segmentation architecture \cite{ronneberger_u-net:_2015}, but all the implementations I found were not generic enough and needed preprocessing of the data. I ended up using a more classic machine learning approach with algorithms included in scikit-learn \cite{pedregosa_scikit-learn:_2011}. I experimented with different classifiers such as support vector machines (SVM), Gradient Boosted Regression Trees (GBRT) and Extra-Trees. SVM and GBRT have better regularisation options, but Extra-Trees is faster, which allows for more experimentation.
 
-The more immediate features that could be used are the RGB values. However it seemed clear that spatial features would yield better results than pure colour (or luminosity) values, therefore I chose some potential relevant candidates such as the Frangi vesselness filter or some edge filters.
+Choosing the right set of features is important for a correct training in machine learning. The most immediate features that could be used are the RGB values. However it seemed clear that spatial features would yield better results than pure colour and lightness values, therefore I chose some potential relevant candidates such as the Frangi vesselness filter or some edge filters. The superiority of CNNs resides in the fact that one does not need to decide which features might be relevant. The filters needed for vessel classification are automatically learnt by the network if the architecture and hyperparameters are defined correctly.
+
+After writing and running the code for preprocessing and training, I performed a validation similar to the one used for DRIU and generated the figures included in this report.
 
 
 \subsection{What I learnt}
 
 Some key aspects I learnt during the hands-on experiment:
 \begin{enumerate}
-  \item \textbf{Reproducibility} At first glance, the authors seem to have done a very good job in terms of reproducibility by sharing their results, their models and some code for testing. However, the need for an outdated version of a C++ library made the task impossible. Also, they did not share the code using for preprocessing and training. The approach I will use for my research is sharing as much code and data as possible in open repositories and databases, and make reproducibility as simple as possible. A potential solution for installation issues would be using a script that installs a customised \texttt{conda} \cite{noauthor_conda_nodate} environment in one single command line. Also, if needed, the software could also be distributed inside a Docker container \cite{noauthor_docker_nodate} for higher compatibility
+  \item \textbf{Reproducibility} At first glance, the authors seem to have done a very good job in terms of reproducibility by sharing their results, their models and some code for testing. However, the need for an outdated version of a C++ library made the reproduction impossible. Furthermore, they did not share the code using for preprocessing and training. The approach I will use for my research is sharing as much code and data as possible in open repositories and databases, and make reproducibility as simple as possible. A potential solution for installation issues would be using a script that installs a customised \texttt{conda} \cite{noauthor_conda_nodate} environment with all the needed libraries in one single command line. Also, if needed, the software could be distributed inside a Docker container \cite{noauthor_docker_nodate} for higher compatibility
 
-  \item \textbf{Data} Retrieval and managing of data is an important part of any medical imaging project, but it might be even more crucial when machine learning is involved. Some aspects that may need extra attention include:
+  \item \textbf{Data} Retrieval and managing of data is an integral part of any medical imaging project, but it might be even more crucial when machine learning is involved. Some aspects that may need extra attention include:
     \begin{itemize}
-      \item Getting data to work with may be difficult. Working closely with clinicians and technicians to improve the amount and quality of the data is important in the field of biomedical engineering. Public datasets are very useful for the community
-      \item Using a well tested, centralised, backed up and anonymised storage system for the data helps a lot
-      \item Designing an object-oriented piece of software capable of handling the data management in a high-level, user-transparent fashion will mean a faster software development and experimentation
+      \item Getting data may be difficult. Working closely with clinicians and technicians to improve the amount and quality of the data is important in the field of biomedical engineering. Public datasets are very useful for the community
+      \item It is beneficial to use a well tested, centralised, backed up and anonymised storage system for the data
+      \item Designing an object-oriented piece of software capable of handling the data management in a high-level, user-transparent fashion means a faster software development and experimentation
     \end{itemize}
 
   \item \textbf{Training} Some aspects related to training the model:
@@ -42,11 +44,11 @@ The authors trained one model per dataset. This does not provide a good approxim
 \subsubsection{Reproducibility}
 As stated before, the reproducibility of the project could have been improved using precompiled binaries of HED or a Docker container.
 
-\subsubsection{Discussion}
-The authors do not mention any limitations of their method.
-
 \subsubsection{Validation}
 The authors do not share the code or the parameters used to compare against the traditional and state-of-the-art approaches.
+
+\subsubsection{Discussion}
+The authors do not mention any potential limitations of their method.
 
 
 % Discuss the non-obvious connections you found in this work with methods from other fields / applications
