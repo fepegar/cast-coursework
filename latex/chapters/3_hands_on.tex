@@ -19,7 +19,8 @@ Figure \ref{fig:collage} shows the segmentation results for the samples with hig
 
 \begin{figure}
   \includegraphics[width=\textwidth]{figures/collage}
-  \caption{Results with highest (top), median (middle) and lowest (bottom) Dice scores using a 0.5 threshold. From left to right: acquired image of the retinal fundus; vessel probabilities using Extra-Trees; comparison of Extra-Trees thresholded probabilities to manual segmentation; vessel probabilities using DRIU; comparison of DRIU thresholded probabilities to manual segmentation; comparison of manual segmentation from first and second annotators. When comparing the binary images: first annotator is taken as groud truth; white pixels represent true positives; black pixels represent true negatives; magenta pixels represent false positives; and green pixels represent false negatives. The probability maps have been masked to show only the acquired field of view; higher lightness represents higher foreground probability} \label{fig:collage}
+  \caption{Results with highest (top), median (middle) and lowest (bottom) Dice scores using a 0.5 threshold. From left to right: acquired image of the retinal fundus; vessel probabilities using Extra-Trees; comparison of Extra-Trees thresholded probabilities to manual segmentation; vessel probabilities using DRIU; comparison of DRIU thresholded probabilities to manual segmentation; comparison of manual segmentation from first and second annotators. When comparing the binary images: first annotator is taken as groud truth; white pixels represent true positives; black pixels represent true negatives; magenta pixels represent false positives; and green pixels represent false negatives. The probability maps have been masked to show only the acquired field of view; higher lightness represents higher foreground probability}
+  \label{fig:collage}
 \end{figure}
 
 Figure~\ref{fig:dice} shows all the Dice scores for both methods. DRIU presents higher scores for all cases.
@@ -27,7 +28,17 @@ Figure~\ref{fig:dice} shows all the Dice scores for both methods. DRIU presents 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/dices}
-  \caption{Dice scores of both methods between probabilities thresholded at 0.5 and ground truth (first annotator).} \label{fig:dice}
+  \caption{Dice scores of both methods between probabilities thresholded at 0.5 and the ground truth (first annotator).}
+  \label{fig:dice}
+\end{figure}
+
+Figure~\ref{fig:pr} shows the region precision-recall curve for this method. The area under the curve is much smaller than the obtained by DRIU.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/precision-recall}
+  \caption{Region precision-recall curve between the predicted probabilities and the ground truth (first annotator).}
+  \label{fig:pr}
 \end{figure}
 
 Figure~\ref{fig:importance} shows the importance of each pixel feature for the classification. As expected, the Frangi filter is the most relevant feature used by the algorithm, followed by the Sobel and Laplacian filters. Pixels in vessels seem to be much better represented by spatial filters than by colour features.
