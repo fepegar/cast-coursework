@@ -14,7 +14,7 @@ def normalise(image):
 
 
 def main():
-    repo_dir = Path(__file__).parents[3]
+    repo_dir = Path(__file__).parents[2]
     figures_dir = repo_dir / 'latex' / 'figures'
     output_path = figures_dir / 'collage.png'
 

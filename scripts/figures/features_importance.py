@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.externals import joblib
 
-repo_dir = Path(__file__).parents[3]
+repo_dir = Path(__file__).parents[2]
 figures_dir = repo_dir / 'latex' / 'figures'
 output_path = figures_dir / 'importances.png'
 
